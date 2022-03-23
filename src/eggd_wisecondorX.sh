@@ -1,30 +1,31 @@
 #!/bin/bash
 
 main() {
+    nb_cpus=$(grep -c ^processor /proc/cpuinfo)
 
-    echo "Value of bam: '${bam[@]}'"
-    echo "Value of binsize: '$binsize'"
+    dx-download-all-inputs
 
-    for i in ${!bam[@]}
-    do
-        dx download "${bam[$i]}" -o bam-$i
-    done
-
+    # setup wisecondorX
     tar xzf WisecondorX-1.2.4.tar.gz
+    cd WisecondorX-1.2.4
+    python setup.py install
 
     # convert query bams into .npz files
     for bam in $(ls *bam); do
-        prefix=${bam#*.}
-        WisecondorX convert $bam $prefix.npz
+        # get sample id (sample for validation for name Sample_n_stuff_blarg)
+        sample_id=${bam%_*_*}
+        WisecondorX convert ${bam} ${sample_id}.npz --binsize ${binsize}
     done
 
-    # create reference
-    WisecondorX newref reference_input_dir/*.npz reference_output.npz
+    if [[ "$create_ref" == true ]]; then
+        # create reference
+        WisecondorX newref /*.npz ~/out/wisecondorx_output/reference.npz --cpus ${nb_cpus}
+    else
+        for npz in $(ls *npz); do
+            # run CNV prediction
+            WisecondorX predict ${npz} ~/out/reference.npz ~/out/wisecondorx_output/output_id
+        done
+    fi
 
-    # run CNV prediction
-    WisecondorX predict test_input.npz reference_input.npz output_id
-
-    for i in "${!something[@]}"; do
-        dx-jobutil-add-output something "${something[$i]}" --class=array:file
-    done
+    dx-upload-all-outputs --parallel
 }
