@@ -3,7 +3,7 @@
   "title": "eggd_wisecondorX",
   "summary": "App to run WisecondorX",
   "dxapi": "1.0.0",
-  "version": "v1.0.0",
+  "version": "1.0.0",
   "inputSpec": [
     {
       "name": "bam",
@@ -11,24 +11,53 @@
       "class": "array:file",
       "optional": false,
       "patterns": [
-        "*"
+        "*.bam"
       ],
+      "help": "Bam files to process either calls or reference creation"
+    },
+    {
+      "name": "reference",
+      "label": ".npz reference file",
+      "class": "file",
+      "optional": true,
+      "patterns": [
+        "*.npz"
+      ],
+      "help": "Reference created using the WisecondorX app"
+    },
+    {
+      "name": "create_ref",
+      "label": "Run only the creation of the reference",
+      "class": "boolean",
+      "optional": true,
+      "default": false,
+      "help": "Flag to indicate to run only the creation of the reference .npz file"
+    },
+    {
+      "name": "binsize_convert",
+      "label": "Binsize used when converting bams into npz (default=5e3)",
+      "class": "int",
+      "optional": true,
+      "default": 5000,
+      "group": "convert",
       "help": ""
     },
     {
-      "name": "binsize",
-      "label": "Binsize (default=5e3)",
+      "name": "binsize_newref",
+      "label": "Binsize used when creating reference npz (default=1e5)",
       "class": "int",
       "optional": true,
+      "default": 100000,
+      "group": "newref",
       "help": ""
     }
   ],
   "outputSpec": [
     {
-      "name": "something",
+      "name": "wisecondorx_output",
       "class": "array:file",
       "patterns": [
-        "*"
+        "*.npz"
       ],
       "help": ""
     }
@@ -46,7 +75,7 @@
     "version": "0"
   },
   "regionalOptions": {
-    "aws:us-east-1": {
+    "aws:eu-central-1": {
       "systemRequirements": {
         "*": {
           "instanceType": "mem1_ssd1_v2_x4"
