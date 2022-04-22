@@ -3,7 +3,7 @@
 main() {
     nb_cpus=$(grep -c ^processor /proc/cpuinfo)
 
-    dx-download-all-inputs
+    dx-download-all-inputs --parallel
 
     # setup wisecondorX
     tar xzf WisecondorX-1.2.4.tar.gz
