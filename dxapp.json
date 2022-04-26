@@ -9,11 +9,31 @@
       "name": "bam",
       "label": "Bams to process",
       "class": "array:file",
-      "optional": false,
+      "optional": true,
       "patterns": [
         "*.bam"
       ],
       "help": "Bam files to process either calls or reference creation"
+    },
+    {
+      "name": "bai",
+      "label": "Bai to process",
+      "class": "array:file",
+      "optional": true,
+      "patterns": [
+        "*.bam"
+      ],
+      "help": "Bai files to process either calls or reference creation"
+    },
+    {
+      "name": "npz",
+      "label": "NPZ files from previous conversion",
+      "class": "array:file",
+      "optional": true,
+      "patterns": [
+        "*.npz"
+      ],
+      "help": "NPZ files to call CNVs from"
     },
     {
       "name": "reference",
@@ -26,12 +46,28 @@
       "help": "Reference created using the WisecondorX app"
     },
     {
+      "name": "convert_npz",
+      "label": "Run only conversion of bams into npz",
+      "class": "boolean",
+      "optional": false,
+      "default": false,
+      "help": "Flag to indicate to run only the conversion of bams into .npz files"
+    },
+    {
       "name": "create_ref",
       "label": "Run only the creation of the reference",
       "class": "boolean",
-      "optional": true,
+      "optional": false,
       "default": false,
       "help": "Flag to indicate to run only the creation of the reference .npz file"
+    },
+    {
+      "name": "variant_calling",
+      "label": "Run only the variant calling",
+      "class": "boolean",
+      "optional": false,
+      "default": false,
+      "help": "Flag to indicate to run only the variant calling"
     },
     {
       "name": "binsize_convert",
@@ -74,11 +110,24 @@
     "file": "src/eggd_wisecondorX.sh",
     "version": "0"
   },
+  "developers":[
+    "org-emee_1"
+  ],
+  "authorizedUsers": [
+    "org-emee_1"
+  ],
+  "access": {
+    "project": "CONTRIBUTE",
+    "allProjects": "VIEW",
+    "network": [
+      "*"
+    ]
+  },
   "regionalOptions": {
     "aws:eu-central-1": {
       "systemRequirements": {
         "*": {
-          "instanceType": "mem1_ssd1_v2_x8"
+          "instanceType": "mem1_ssd1_v2_x4"
         }
       }
     }
