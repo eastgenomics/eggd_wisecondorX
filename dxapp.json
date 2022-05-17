@@ -21,9 +21,17 @@
       "class": "array:file",
       "optional": true,
       "patterns": [
-        "*.bam"
+        "*.bai"
       ],
       "help": "Bai files to process either calls or reference creation"
+    },
+    {
+      "name": "sex",
+      "label": "Sex of patient",
+      "class": "file",
+      "optional": true,
+      "choices": ["M", "F"],
+      "help": "Sex of the patient"
     },
     {
       "name": "npz",
