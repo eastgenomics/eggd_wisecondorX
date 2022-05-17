@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -exo pipefail
 
 main() {
     nb_cpus=$(grep -c ^processor /proc/cpuinfo)
@@ -12,11 +12,12 @@ main() {
 
     dx-download-all-inputs --parallel
 
-    if [[ "$create_ref" == false ]]; then
+    if [[ "$create_ref" == false && "$variant_calling" == true ]]; then
         find ~/in/reference -type f -name "*" -print0 | xargs -0 -I {} mv {} ~/ref
         ref=~/ref/${reference_name}
     fi
 
+    sudo apt-get update
     sudo apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
 
     tar xzf Python-3.6.10.tgz
@@ -71,7 +72,11 @@ main() {
         for npz in $(ls *npz); do
             sample_id=${npz%.*}
             # run CNV prediction
-            WisecondorX predict ${npz} ${ref} ~/out/wisecondorx_output/${sample_id} --plot --bed
+            if [[ -z "${sex}" ]]; then
+                WisecondorX predict ${npz} ${ref} ~/out/wisecondorx_output/${sample_id} --plot --bed --gender ${sex}
+            else
+                WisecondorX predict ${npz} ${ref} ~/out/wisecondorx_output/${sample_id} --plot --bed
+            fi
         done
     fi
 
