@@ -28,7 +28,7 @@
     {
       "name": "sex",
       "label": "Sex of patient",
-      "class": "file",
+      "class": "string",
       "optional": true,
       "choices": ["M", "F"],
       "help": "Sex of the patient"
