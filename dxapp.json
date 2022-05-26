@@ -46,7 +46,7 @@
     {
       "name": "reference",
       "label": ".npz reference file",
-      "class": "file",
+      "class": "array:file",
       "optional": true,
       "patterns": [
         "*.npz"
@@ -109,7 +109,7 @@
   "runSpec": {
     "timeoutPolicy": {
       "*": {
-        "hours": 48
+        "hours": 96
       }
     },
     "interpreter": "bash",
